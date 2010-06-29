@@ -5,12 +5,14 @@
 ## Login   <faltad@gmail.com>
 ## 
 ## Started on  Tue Jun 29 22:40:12 2010 Faltad
-## Last update Tue Jun 29 23:16:08 2010 Faltad
+## Last update Wed Jun 30 00:51:21 2010 Faltad
 ##
 
 TOP_DIR	=	..
 
-SRC	=	kmain.c
+SRC	=	kmain.c\
+		screen.c\
+		lib.c
 
 include		$(TOP_DIR)/Makefile.inc
 
