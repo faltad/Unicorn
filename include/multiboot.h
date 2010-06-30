@@ -5,7 +5,7 @@
 ** Login   <faltad@gmail.com>
 ** 
 ** Started on  Tue Jun 29 00:10:10 2010 Faltad
-** Last update Tue Jun 29 00:10:54 2010 Faltad
+** Last update Wed Jun 30 11:16:40 2010 Faltad
 */
 
 /* Multiboot structure */
@@ -19,3 +19,4 @@ struct mb_partial_info
    unsigned long cmdline;
 };
    
+#define MULTI_BOOT_MAGIC_CHECK 0x2BADB002
