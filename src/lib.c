@@ -5,8 +5,10 @@
 ** Login   <faltad@gmail.com>
 ** 
 ** Started on  Wed Jun 30 00:47:04 2010 Faltad
-** Last update Wed Jun 30 13:37:08 2010 Faltad
+** Last update Wed Jun 30 23:12:53 2010 Faltad
 */
+
+#include "screen.h"
 
 void	*memset(void *s, int c, int n)
 {
@@ -35,18 +37,25 @@ int	strlen(char *s)
    return s - p;
 }
 
-void	putnbr(int nb)
+/* We should replace kputchar with putc later */
+
+void	putnbr_base(int nb, char *base)
 {
    if (nb < 0)
    {
       kputchar('-');
       nb *= -1;
    }
-   if (nb < 10)
-      kputchar(nb + '0');
+   if (nb < strlen(base))
+      kputchar(base[nb]);
    else
    {
-      putnbr(nb / 10);
-      kputchar(nb % 10 + '0');
+      putnbr_base(nb / strlen(base), base);
+      kputchar(base[nb % strlen(base)]);
    }
+}
+
+void	putnbr(int nb)
+{
+   putnbr_base(nb, "0123456789");
 }

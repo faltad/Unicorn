@@ -5,7 +5,7 @@
 ** Login   <faltad@gmail.com>
 ** 
 ** Started on  Tue Jun 29 00:06:12 2010 Faltad
-** Last update Wed Jun 30 11:15:09 2010 Faltad
+** Last update Wed Jun 30 23:27:28 2010 Faltad
 */
 
 #include "multiboot.h"
@@ -16,11 +16,8 @@ void	kmain(unsigned long magic, struct mb_partial_info *mbd)
    if (magic == MULTI_BOOT_MAGIC_CHECK)
    {
       clear_screen();
-      kputs("Test from Unicorn !\n");
-      kputs("low mem : ");
-      putnbr(mbd->low_mem);
-      kputs(" high mem : ");
-      putnbr(mbd->high_mem);
-      kputs("\n");
+      kprintf("Test from Unicorn !\nLow mem : %d high mem : %d\n",
+	      mbd->low_mem, mbd->high_mem);
+      kprintf("Test : %20#x %0#b %2b %d\n", 10, 10, 10, 0);
    }
 }

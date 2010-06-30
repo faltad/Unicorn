@@ -5,7 +5,7 @@
 ## Login   <faltad@gmail.com>
 ## 
 ## Started on  Tue Jun 29 00:20:34 2010 Faltad
-## Last update Tue Jun 29 23:16:45 2010 Faltad
+## Last update Wed Jun 30 23:24:14 2010 Faltad
 ##
 
 TOP_DIR	=	..
@@ -16,6 +16,6 @@ all:
 	cat stage1 stage2 pad $(TOP_DIR)/$(KERNEL) > $(TOP_DIR)/$(GRUB_IMG)
 
 clean:
-	rm ../$(GRUB_IMG)
+	$(RM) ../$(GRUB_IMG)
 
 re: clean all

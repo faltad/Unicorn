@@ -4,13 +4,14 @@
 ## Login   <faltad@gmail.com>
 ## 
 ## Started on  Tue Jun 29 00:22:40 2010 Faltad
-## Last update Tue Jun 29 23:15:31 2010 Faltad
+## Last update Wed Jun 30 23:23:58 2010 Faltad
 ##
 
 CC		=	gcc
 LD		=	ld
 AS		=	nasm
 MAKE		=	make -C
+RM		=	rm -rf
 
 KERNEL		=	unicorn-kernel.bin
 GRUB_IMG	=	unicorn.img
