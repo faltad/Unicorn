@@ -17,8 +17,8 @@ SRC	=	kmain.c\
 include		$(TOP_DIR)/Makefile.inc
 
 all: $(OBJ)
-	$(AS) -f elf boot.s
-	$(LD) -T link.ld boot.o $(OBJ) -o $(KERNEL)
+	$(AS) $(ASFLAGS) boot.s
+	$(LD) $(LDFLAGS) -T link.ld boot.o $(OBJ) -o $(KERNEL)
 	cp $(KERNEL) $(TOP_DIR)
 clean:
 	rm -rf *.o

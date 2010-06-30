@@ -8,6 +8,7 @@
 ##
 
 CC		=	gcc
+LD		=	ld
 AS		=	nasm
 MAKE		=	make -C
 
@@ -18,6 +19,8 @@ SRC_DIR		=	src/
 IMG_DIR		=	img/
 INCLUDE_PATH	=	$(TOP_DIR)/include/
 
-CFLAGS		=	-W -Wall -I $(INCLUDE_PATH) -Wshadow
+ASFLAGS		=	-f elf32
+CFLAGS		=	-W -Wall -I $(INCLUDE_PATH) -Wshadow -m32
+LDFLAGS		=	-m elf_i386
 
 OBJ		=	$(SRC:.c=.o)

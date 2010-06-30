@@ -6,6 +6,8 @@
 ;; See http://www.gnu.org/software/grub/manual/multiboot/html_node/index.html
 ;; for more explanations
 
+BITS			32
+
 MULTI_ALIGN_MOD		equ 1<<0
 MULTI_MEMINFO_MOD	equ 1<<1
 MULTI_FLAG		equ MULTI_MEMINFO_MOD | MULTI_ALIGN_MOD
