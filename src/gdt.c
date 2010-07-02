@@ -22,7 +22,8 @@ static void gdt_set_gate(int num, uint base, uint limit, uchar access, uchar gra
 void	gdt_flush(void)
 {
    asm("lgdtl (gdtptr)");
-   asm("movw 0x10, %ax\n \
+
+   asm("movw $0x10, %ax\n \
         movw %ax, %ds\n \
         movw %ax, %es\n \
 	movw %ax, %fs\n \
