@@ -19,8 +19,21 @@ struct frame_s
   void *	ret;	/* return address of the frame */
 } __attribute__((packed));
 
+/* used not to mess up register while calling functions */
+struct reg_s
+{
+  int		r_eax;
+  int		r_ebx;
+  int		r_ecx;
+  int		r_edx;
+  int		r_esi;
+  int		r_edi;
+  int		r_ebp;
+  int		r_esp;
+};
+
 /* print a trace of latest called c-function */
-static void	backtrace(void)
+static void		backtrace(void)
 {
   struct frame_s *	current;
   int			i;
@@ -41,32 +54,43 @@ static void	backtrace(void)
   kprintf("#\t/backtrace\n");
 }
 
-/* store register to dst and print its content */
-#define	PRINT_REG(reg, dst) \
-  __asm__("movl %%"reg",%0" : "=r" (dst));	\
-  kprintf("#\t\t> %s: 0x%p\n", reg, dst);
+/* print content of a saved register */
+#define	PRINT_REG(reg, dst) kprintf("#\t\t> %s: 0x%p [%b]\n", reg, dst, dst);
 
-/* trace several registers */
-static void	tracereg(void)
+static void		tracereg(struct reg_s * regs)
 {
-  unsigned int	reg;
-
   kprintf("#\tregisters\n");
-  PRINT_REG("eax", reg);
-  PRINT_REG("ebx", reg);
-  PRINT_REG("ecx", reg);
-  PRINT_REG("edx", reg);
-  PRINT_REG("esi", reg);
-  PRINT_REG("edi", reg); 
-  PRINT_REG("ebp", reg);
-  PRINT_REG("esp", reg);
+  PRINT_REG("eax", regs->r_eax);
+  PRINT_REG("ebx", regs->r_ebx);
+  PRINT_REG("ecx", regs->r_ecx);
+  PRINT_REG("edx", regs->r_edx);
+  PRINT_REG("esi", regs->r_esi);
+  PRINT_REG("edi", regs->r_edi); 
+  PRINT_REG("ebp", regs->r_ebp);
+  PRINT_REG("esp", regs->r_esp);
   kprintf("#\t/registers\n");
 }
 
+/* save a register */
+#define	SAVE_REG(reg, dst)  __asm__("movl %%"reg",%0" : "=r" (dst));
+
 void		kpanic(const char * message)
 {
+  struct reg_s		regs;
+
+  /* done before any operation that would change them */
+  SAVE_REG("eax", regs.r_eax);
+  SAVE_REG("ebx", regs.r_ebx);
+  SAVE_REG("ecx", regs.r_ecx);
+  SAVE_REG("edx", regs.r_edx);
+  SAVE_REG("esi", regs.r_esi);
+  SAVE_REG("edi", regs.r_edi);
+  /* probably useless, as modified by the call to kpanic */
+  SAVE_REG("ebp", regs.r_ebp);
+  SAVE_REG("esp", regs.r_esp);
+
   kprintf("#\tKernel panic: %s\n", message);
-  tracereg();
+  tracereg(&regs);
   backtrace();
 
   /* mxs: Not sure if this is good, as any interupt might occur
