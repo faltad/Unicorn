@@ -18,16 +18,18 @@ static void	crash(void)
   static int	i = 0;
 
   ++i;
-  if (i < 10)
+  if (i < 5)
     crash();
   else
     kpanic("crash");
 }
 
-void	kmain(unsigned long magic, struct mb_partial_info *mbd)
+void		kmain(unsigned long magic, struct mb_partial_info *mbd)
 {
   if (magic == MULTI_BOOT_MAGIC_CHECK)
-    {      
+    {
+      /* must be called in kmain, to have a correct EBP value */
+      KPANIC_INIT();
       clear_screen();
       kprintf("Test from Unicorn !\nLow mem : %d high mem : %d\n",
 	      mbd->low_mem, mbd->high_mem);
@@ -35,4 +37,5 @@ void	kmain(unsigned long magic, struct mb_partial_info *mbd)
 
       crash();
     }
+
 }

@@ -10,7 +10,8 @@
 #include "screen.h"
 #include "libc.h"
 
-void kmain(unsigned long, struct mb_partial_info *);
+/* initialised in kmain() context with initial ebp value */
+unsigned int	kpanic_kmain_ebp = 0;
 
 /* frame pushed on stack after each function call */
 struct frame_s
@@ -44,8 +45,8 @@ static void		backtrace(void)
   __asm__("movl %%ebp, %0"
 	  : "=r" (current));
 
-  /* need something better to stop tracing */
-  for (i = 0; i < 5; ++i)
+  /* we stop tracing when arriving to kmain() or when more than 5 functions */
+  for (i = 0; (unsigned int) current != kpanic_kmain_ebp && i < 5; ++i)
     {
       kprintf("#\t\t(%d) 0x%p\n", i, current->ret);
       current = current->prev;
