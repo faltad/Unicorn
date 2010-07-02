@@ -25,28 +25,50 @@ static void	backtrace(void)
   struct frame_s *	current;
   int			i;
 
-  kprintf("---------- backtrace\n");
+  kprintf("#\tbacktrace\n");
 
   /* mov DWORD [current], ebp */
   __asm__("movl %%ebp, %0"
 	  : "=r" (current));
 
   /* need something better to stop tracing */
-  for (i = 0; i < 10; ++i)
+  for (i = 0; i < 5; ++i)
     {
-      kprintf("(%d) 0x%p\n", i, current->ret);
+      kprintf("#\t\t(%d) 0x%p\n", i, current->ret);
       current = current->prev;
     }
 
-  kprintf("---------- /backtrace\n");
+  kprintf("#\t/backtrace\n");
+}
+
+/* store register to dst and print its content */
+#define	PRINT_REG(reg, dst) \
+  __asm__("movl %%"reg",%0" : "=r" (dst));	\
+  kprintf("#\t\t> %s: 0x%p\n", reg, dst);
+
+/* trace several registers */
+static void	tracereg(void)
+{
+  unsigned int	reg;
+
+  kprintf("#\tregisters\n");
+  PRINT_REG("eax", reg);
+  PRINT_REG("ebx", reg);
+  PRINT_REG("ecx", reg);
+  PRINT_REG("edx", reg);
+  PRINT_REG("esi", reg);
+  PRINT_REG("edi", reg); 
+  PRINT_REG("ebp", reg);
+  PRINT_REG("esp", reg);
+  kprintf("#\t/registers\n");
 }
 
 void		kpanic(const char * message)
 {
-  kprintf("Kernel panic: %s\n", message);
+  kprintf("#\tKernel panic: %s\n", message);
+  tracereg();
   backtrace();
-  /* tracereg(); @todo */
-  
+
   /* mxs: Not sure if this is good, as any interupt might occur
    * I think we need a flag or something to disable handling
    * of interrupts.
