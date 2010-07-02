@@ -10,14 +10,29 @@
 
 #include "multiboot.h"
 #include "screen.h"
+#include "libc.h"
+
+/* temporary code to test kpanic() */
+static void	crash(void)
+{
+  static int	i = 0;
+
+  ++i;
+  if (i < 10)
+    crash();
+  else
+    kpanic("crash");
+}
 
 void	kmain(unsigned long magic, struct mb_partial_info *mbd)
 {
-   if (magic == MULTI_BOOT_MAGIC_CHECK)
-   {
+  if (magic == MULTI_BOOT_MAGIC_CHECK)
+    {      
       clear_screen();
       kprintf("Test from Unicorn !\nLow mem : %d high mem : %d\n",
 	      mbd->low_mem, mbd->high_mem);
       kprintf("Test : %20#x %0#b %2b %d\n", 10, 10, 10, 0);
-   }
+
+      crash();
+    }
 }

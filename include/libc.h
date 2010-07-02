@@ -24,6 +24,8 @@ void	putnbr(int nb);
 #define FLAG_ALTERNATE	0x1
 int		kprintf(char *str, ...);
 
+/* kpanic */
+void		kpanic(const char *);
 
 typedef __builtin_va_list va_list;
 

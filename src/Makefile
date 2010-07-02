@@ -13,7 +13,8 @@ TOP_DIR	=	..
 SRC	=	kmain.c\
 		screen.c\
 		lib.c\
-		kprintf.c
+		kprintf.c\
+		kpanic.c
 
 include		$(TOP_DIR)/Makefile.inc
 
