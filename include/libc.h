@@ -24,13 +24,13 @@ void	putnbr(int nb);
 #define FLAG_ALTERNATE	0x1
 int		kprintf(char *str, ...);
 
+/* kpanic */
+void		kpanic(const char *);
+
 /* save the initial EBP position to be able to stop tracing function stack */
 #define	KPANIC_INIT()					\
   extern unsigned int	kpanic_kmain_ebp;		\
   __asm__("movl %%ebp, %0" : "=r" (kpanic_kmain_ebp));
-
-/* kpanic */
-void		kpanic(const char *);
 
 typedef __builtin_va_list va_list;
 

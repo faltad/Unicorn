@@ -3,7 +3,9 @@
  * before beeing raised.
  *
  * Use assembly contexts to retrace the execution list
- * which are stored in ebp.  
+ * using prolog/epilogs.
+ *
+ * Also dump registers before beeing used.
  */
 
 #include "multiboot.h"
@@ -48,7 +50,7 @@ static void		backtrace(void)
   /* we stop tracing when arriving to kmain() or when more than 5 functions */
   for (i = 0; (unsigned int) current != kpanic_kmain_ebp && i < 5; ++i)
     {
-      kprintf("#\t\t(%d) 0x%p\n", i, current->ret);
+      kprintf("#\t\t(%d) %X\n", i, current->ret);
       current = current->prev;
     }
 
@@ -56,7 +58,7 @@ static void		backtrace(void)
 }
 
 /* print content of a saved register */
-#define	PRINT_REG(reg, dst) kprintf("#\t\t> %s: 0x%p [%b]\n", reg, dst, dst);
+#define	PRINT_REG(reg, dst) kprintf("#\t\t> %s: %X\n", reg, dst, dst);
 
 static void		tracereg(struct reg_s * regs)
 {
