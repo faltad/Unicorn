@@ -33,7 +33,7 @@ isr_%1:
 	cli
 	push BYTE %1
 	
-	jump isr_jumper
+	jmp isr_jumper
 
 %endmacro
 
@@ -45,12 +45,12 @@ isr_noerr 4 ; overflow
 isr_noerr 5 ; bounds check
 isr_noerr 6 ; invalid opcode
 isr_noerr 7 ; coprocessor not available
-isr_noerr 8 ; double fault
+isr_err 8 ; double fault
 isr_noerr 9 ; coprocessor segment overrun
-isr_noerr 10 ; invalid tss
-isr_noerr 11 ; segment not present
-isr_noerr 12 ; stack exception
-isr_noerr 13 ; triple fault
+isr_err 10 ; invalid tss
+isr_err 11 ; segment not present
+isr_err 12 ; stack exception
+isr_err 13 ; triple fault
 
 global isr_14 ; page fault
         
@@ -69,28 +69,29 @@ isr_noerr 18 ; machine check exception
 ;; 19-31 reserved
 
 isr_jumper:
-        
+	
         pusha
-        push ds
-        push es
-        push fs
-        push gs
-        
-        mov ax, 0x10
-        mov ds, ax
-        mov es, ax
-        mov fs, ax
-        mov gs, ax
-        mov eax, esp
-        push eax
-        mov eax, isr_handler
-        call eax
-        pop eax
 
-        pop gs
-        pop fs
-        pop es
-        pop ds
-        popa
-        add esp, 8 ; error + id previously pop
-        iret
+	mov ax, ds
+	push eax
+
+	mov ax, 0x10
+	mov ds, ax
+	mov es, ax
+	mov fs, ax
+	mov gs, ax
+
+	call isr_handler
+
+	pop eax
+
+	mov ds, ax
+	mov es, ax
+	mov fs, ax
+	mov gs, ax
+
+	popa
+	add esp, 8
+	sti
+	iret
+	

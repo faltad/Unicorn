@@ -38,6 +38,9 @@ void		kmain(unsigned long magic, struct mb_partial_info *mbd)
 	      mbd->low_mem, mbd->high_mem);
       init_gdt();
       kprintf("Test : %20#x %0#b %2b %d\n", 10, 10, 10, 0);
+      idt_setup();
+      asm("int $0x00");
+      kprintf("Test : %20#x %0#b %2b %d\n", 10, 10, 10, 0);
       crash();
     }
 }
