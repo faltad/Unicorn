@@ -11,6 +11,7 @@
 #include "multiboot.h"
 #include "screen.h"
 #include "libc.h"
+#include "sys.h"
 
 /* temporary code to test kpanic() */
 static void	crash(void)
@@ -30,7 +31,9 @@ void		kmain(unsigned long magic, struct mb_partial_info *mbd)
     {
       /* must be called in kmain, to have a correct EBP value */
       KPANIC_INIT();
+      idt_setup();
       clear_screen();
+      
       kprintf("Test from Unicorn !\nLow mem : %d high mem : %d\n",
 	      mbd->low_mem, mbd->high_mem);
       kprintf("Test : %20#x %0#b %2b %d\n", 10, 10, 10, 0);

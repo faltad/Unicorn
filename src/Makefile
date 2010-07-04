@@ -14,7 +14,8 @@ SRC	=	kmain.c\
 		screen.c\
 		lib.c\
 		kprintf.c\
-		kpanic.c
+		kpanic.c\
+		idt.c
 
 include		$(TOP_DIR)/Makefile.inc
 
