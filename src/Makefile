@@ -5,7 +5,7 @@
 ## Login   <faltad@gmail.com>
 ## 
 ## Started on  Tue Jun 29 22:40:12 2010 Faltad
-## Last update Sun Jul  4 21:42:30 2010 Faltad
+## Last update Sun Jul  4 21:55:10 2010 Faltad
 ##
 
 TOP_DIR	=	..
@@ -15,8 +15,7 @@ SRC	=	kmain.c\
 		lib.c\
 		kprintf.c\
 		kpanic.c\
-		idt.c
-		gdt.c
+		system.c
 
 include		$(TOP_DIR)/Makefile.inc
 

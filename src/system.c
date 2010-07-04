@@ -1,9 +1,16 @@
 
-#include "descriptor_table.h"
+#include "sys.h"
+#include "libc.h"
 #include "types.h"
 
-t_gdtptr	gdtptr;
-t_gdt_entry	gdt_entries[5];
+/* this code has not fully been tested yet :( */
+
+
+static struct idt_entry_s	idt_array[0xff];
+static struct idt_ptr_s		idt_p;
+
+static t_gdtptr			gdtptr;
+static t_gdt_entry		gdt_entries[5];
 
 static void gdt_set_gate(int num, uint base, uint limit, uchar access, uchar gran)
 {
@@ -46,4 +53,23 @@ void	init_gdt(void)
     gdt_set_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF); // User mode data segment
 
     gdt_flush();
+}
+
+/* initialize an idt entry */
+void		idt_set_gate(uchar idx, uint base, 
+			     ushort sel, uchar flags)
+{
+  idt_array[idx].base_low = (base & 0xFFFF);
+  idt_array[idx].base_high = (base >> 16) & 0xFFFF;
+  idt_array[idx].flags = flags;
+  idt_array[idx].sel = sel;
+}
+
+/* initialize idt's to 0 and lidt them */
+void		idt_setup(void)
+{
+  idt_p.limit = sizeof(idt_array);
+  idt_p.base = (unsigned int) & idt_array;
+  memset(&idt_array, 0, sizeof(idt_array));
+  __asm__("lidt %0" :: "m" (idt_p));
 }

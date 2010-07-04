@@ -5,7 +5,7 @@
 ** Login   <faltad@gmail.com>
 ** 
 ** Started on  Tue Jun 29 00:06:12 2010 Faltad
-** Last update Fri Jul  2 22:57:07 2010 Faltad
+** Last update Sun Jul  4 21:47:08 2010 Faltad
 */
 
 #include "multiboot.h"
@@ -40,5 +40,4 @@ void		kmain(unsigned long magic, struct mb_partial_info *mbd)
       kprintf("Test : %20#x %0#b %2b %d\n", 10, 10, 10, 0);
       crash();
     }
-
 }
