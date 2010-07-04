@@ -15,13 +15,15 @@ SRC	=	kmain.c\
 		lib.c\
 		kprintf.c\
 		kpanic.c\
+		isr.c\
 		system.c
 
 include		$(TOP_DIR)/Makefile.inc
 
 all: $(OBJ)
 	$(AS) $(ASFLAGS) boot.s
-	$(LD) $(LDFLAGS) -T link.ld boot.o $(OBJ) -o $(KERNEL)
+	$(AS) $(ASFLAGS) isr.s
+	$(LD) $(LDFLAGS) -T link.ld boot.o isr.o $(OBJ) -o $(KERNEL)
 	cp $(KERNEL) $(TOP_DIR)
 clean:
 	$(RM) *.o
