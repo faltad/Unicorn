@@ -2,6 +2,7 @@
 #include "sys.h"
 #include "libc.h"
 #include "types.h"
+#include "screen.h"
 
 /* this code has not fully been tested yet :( */
 
@@ -72,4 +73,12 @@ void		idt_setup(void)
   idt_p.base = (unsigned int) & idt_array;
   memset(&idt_array, 0, sizeof(idt_array));
   __asm__("lidt %0" :: "m" (idt_p));
+}
+
+
+/* basic isr handler */
+void	isr_handler(reg_s regs)
+{
+  kputs("received interrupt\n");
+  kprintf("eax %d", regs.r_eax);
 }

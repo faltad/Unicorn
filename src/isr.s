@@ -1,4 +1,7 @@
-
+BITS			32
+	
+section .text
+	
 extern isr_handler
 
 ;;; This macro registers a new ISR without error handling
@@ -34,7 +37,6 @@ isr_%1:
 
 %endmacro
 
-	
 isr_noerr 0 ; division by zero
 isr_noerr 1 ; debug exceptions
 isr_noerr 2 ; intel reserved (non maskable interupt)
@@ -43,12 +45,12 @@ isr_noerr 4 ; overflow
 isr_noerr 5 ; bounds check
 isr_noerr 6 ; invalid opcode
 isr_noerr 7 ; coprocessor not available
-isr_err 8 ; double fault
+isr_noerr 8 ; double fault
 isr_noerr 9 ; coprocessor segment overrun
-isr_err 10 ; invalid tss
-isr_err 11 ; segment not present
-isr_err 12 ; stack exception
-isr_err 13 ; triple fault
+isr_noerr 10 ; invalid tss
+isr_noerr 11 ; segment not present
+isr_noerr 12 ; stack exception
+isr_noerr 13 ; triple fault
 
 global isr_14 ; page fault
         
