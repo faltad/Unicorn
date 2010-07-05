@@ -27,8 +27,7 @@ static void	crash(void)
 
 void		kmain(unsigned long magic, struct mb_partial_info *mbd)
 {
-  uint *t;
-  uint i;
+  uint t;
 
   if (magic == MULTI_BOOT_MAGIC_CHECK)
     {
@@ -42,8 +41,9 @@ void		kmain(unsigned long magic, struct mb_partial_info *mbd)
       init_gdt();
       kprintf("Test : %20#x %0#b %2b %d\n", 10, 10, 10, 0);
 
-      crash();
       asm("int $0x00");
-
+      /* t = 1/0; */
+      /* asm("cli"); */
+      crash();
     }
 }

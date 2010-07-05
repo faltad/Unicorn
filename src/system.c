@@ -118,24 +118,27 @@ void		idt_setup(void)
 }
 
 
+/* print content of a saved register */
+#define	PRINT_REG(reg, dst) kprintf("#\t\t> %s: %#x\n", reg, dst, dst);
+
 /* basic isr handler */
 void	isr_handler(struct registers regs)
 {
-  kputs("received interrupt\n");
-  kprintf("ds %#x\n", regs.ds);
-  kprintf("edi %#x\n", regs.edi);
-  kprintf("esi %#x\n", regs.esi);
-  kprintf("ebp %#x\n", regs.ebp);
-  kprintf("esp %#x\n", regs.esp);
-  kprintf("ebx %#x\n", regs.ebx);
-  kprintf("edx %#x\n", regs.edx);
-  kprintf("ecx %#x\n", regs.ecx);
-  kprintf("eax %#x\n", regs.eax);
-  kprintf("int_no %#x\n", regs.int_no);
-  kprintf("err_code %#x\n", regs.err_code);
-  kprintf("eip %#x\n", regs.eip);
-  kprintf("cs %#x\n", regs.cs);
-  kprintf("eflags %#x\n", regs.eflags);
-  kprintf("useresp %#x\n", regs.useresp);
-  kprintf("ss %#x\n", regs.ss);
+  kputs("\treceived interrupt\n");
+  PRINT_REG("ds", regs.ds);
+  PRINT_REG("edi", regs.edi);
+  PRINT_REG("esi", regs.esi);
+  PRINT_REG("ebp", regs.ebp);
+  PRINT_REG("esp", regs.esp);
+  PRINT_REG("ebx", regs.ebx);
+  PRINT_REG("edx", regs.edx);
+  PRINT_REG("ecx", regs.ecx);
+  PRINT_REG("eax", regs.eax);
+  PRINT_REG("int_no", regs.int_no);
+  PRINT_REG("err_code", regs.err_code);
+  PRINT_REG("eip", regs.eip);
+  PRINT_REG("cs", regs.cs);
+  PRINT_REG("eflags", regs.eflags);
+  PRINT_REG("useresp", regs.useresp);
+  PRINT_REG("ss", regs.ss);
 }
