@@ -3,6 +3,11 @@
 #ifndef __SYS_UNICORN__
 #define __SYS_UNICORN__
 
+/* save a register */
+#define	SAVE_REG(reg, dst)  __asm__("movl %%"reg",%0" : "=r" (dst))
+
+/* print content of a saved register */
+#define	PRINT_REG(reg, dst) kprintf("#\t\t> %s: %#x\n", reg, dst, dst)
 
 #include "types.h"
 
@@ -44,6 +49,9 @@ void		idt_setup(void);
 void		init_gdt(void);
 
 
+/*
+** registers save when an interruption occurs
+*/
 typedef struct registers registers_t;
 struct			registers
 {

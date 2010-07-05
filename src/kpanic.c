@@ -8,9 +8,9 @@
  * Also dump registers before beeing used.
  */
 
+#include "libc.h"
 #include "multiboot.h"
 #include "screen.h"
-#include "libc.h"
 
 /* initialised in kmain() context with initial ebp value */
 unsigned int	kpanic_kmain_ebp = 0;
@@ -57,40 +57,22 @@ static void		backtrace(void)
   kprintf("#\t/backtrace\n");
 }
 
-/* print content of a saved register */
-#define	PRINT_REG(reg, dst) kprintf("#\t\t> %s: %X\n", reg, dst, dst);
-
-static void		tracereg(struct reg_s * regs)
+static void		tracereg(registers_t *regs)
 {
   kprintf("#\tregisters\n");
-  PRINT_REG("eax", regs->r_eax);
-  PRINT_REG("ebx", regs->r_ebx);
-  PRINT_REG("ecx", regs->r_ecx);
-  PRINT_REG("edx", regs->r_edx);
-  PRINT_REG("esi", regs->r_esi);
-  PRINT_REG("edi", regs->r_edi); 
-  PRINT_REG("ebp", regs->r_ebp);
-  PRINT_REG("esp", regs->r_esp);
+  PRINT_REG("eax", regs->eax);
+  PRINT_REG("ebx", regs->ebx);
+  PRINT_REG("ecx", regs->ecx);
+  PRINT_REG("edx", regs->edx);
+  PRINT_REG("esi", regs->esi);
+  PRINT_REG("edi", regs->edi); 
+  PRINT_REG("ebp", regs->ebp);
+  PRINT_REG("esp", regs->esp);
   kprintf("#\t/registers\n");
 }
 
-/* save a register */
-#define	SAVE_REG(reg, dst)  __asm__("movl %%"reg",%0" : "=r" (dst));
-
-void		kpanic(const char * message)
+void		kpanic(const char * message, registers_t regs)
 {
-  struct reg_s		regs;
-
-  /* done before any operation that would change them */
-  SAVE_REG("eax", regs.r_eax);
-  SAVE_REG("ebx", regs.r_ebx);
-  SAVE_REG("ecx", regs.r_ecx);
-  SAVE_REG("edx", regs.r_edx);
-  SAVE_REG("esi", regs.r_esi);
-  SAVE_REG("edi", regs.r_edi);
-  /* probably useless, as modified by the call to kpanic */
-  SAVE_REG("ebp", regs.r_ebp);
-  SAVE_REG("esp", regs.r_esp);
 
   kprintf("#\tKernel panic: %s\n", message);
   tracereg(&regs);

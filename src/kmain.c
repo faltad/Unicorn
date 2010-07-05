@@ -13,22 +13,8 @@
 #include "libc.h"
 #include "sys.h"
 
-/* temporary code to test kpanic() */
-static void	crash(void)
-{
-  static int	i = 0;
-
-  ++i;
-  if (i < 5)
-    crash();
-  else
-    kpanic("crash");
-}
-
 void		kmain(unsigned long magic, struct mb_partial_info *mbd)
 {
-  uint t;
-
   if (magic == MULTI_BOOT_MAGIC_CHECK)
     {
       /* must be called in kmain, to have a correct EBP value */
@@ -42,8 +28,5 @@ void		kmain(unsigned long magic, struct mb_partial_info *mbd)
       kprintf("Test : %20#x %0#b %2b %d\n", 10, 10, 10, 0);
 
       asm("int $0x00");
-      /* t = 1/0; */
-      /* asm("cli"); */
-      crash();
     }
 }

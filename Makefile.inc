@@ -20,8 +20,8 @@ SRC_DIR		=	src/
 IMG_DIR		=	img/
 INCLUDE_PATH	=	$(TOP_DIR)/include/
 
-ASFLAGS		=	-f elf32
-CFLAGS		=	-W -Wall -I $(INCLUDE_PATH) -Wshadow -m32
+ASFLAGS		=	-f elf32 -g
+CFLAGS		=	-W -Wall -I $(INCLUDE_PATH) -Wshadow -m32 -g
 LDFLAGS		=	-m elf_i386
 
 OBJ		=	$(SRC:.c=.o)

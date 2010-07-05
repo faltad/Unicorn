@@ -118,27 +118,23 @@ void		idt_setup(void)
 }
 
 
-/* print content of a saved register */
-#define	PRINT_REG(reg, dst) kprintf("#\t\t> %s: %#x\n", reg, dst, dst);
-
 /* basic isr handler */
 void	isr_handler(struct registers regs)
 {
-  kputs("\treceived interrupt\n");
-  PRINT_REG("ds", regs.ds);
-  PRINT_REG("edi", regs.edi);
-  PRINT_REG("esi", regs.esi);
-  PRINT_REG("ebp", regs.ebp);
-  PRINT_REG("esp", regs.esp);
-  PRINT_REG("ebx", regs.ebx);
-  PRINT_REG("edx", regs.edx);
-  PRINT_REG("ecx", regs.ecx);
-  PRINT_REG("eax", regs.eax);
-  PRINT_REG("int_no", regs.int_no);
-  PRINT_REG("err_code", regs.err_code);
-  PRINT_REG("eip", regs.eip);
-  PRINT_REG("cs", regs.cs);
-  PRINT_REG("eflags", regs.eflags);
-  PRINT_REG("useresp", regs.useresp);
-  PRINT_REG("ss", regs.ss);
+  uint current_cs;
+
+  SAVE_REG("cs", current_cs);
+  /*
+  ** interruption occurs in kernelland
+  */
+  if (current_cs == regs.cs)
+    {
+      kpanic("interruption receiveid", regs);
+    }
+  /*
+  ** interruption occurs in userland
+  */
+  else
+    {
+    }
 }

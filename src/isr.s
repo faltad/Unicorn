@@ -37,22 +37,22 @@ isr_%1:
 
 %endmacro
 
-isr_noerr 0 ; division by zero
-isr_noerr 1 ; debug exceptions
-isr_noerr 2 ; intel reserved (non maskable interupt)
-isr_noerr 3 ; breakpoint
-isr_noerr 4 ; overflow
-isr_noerr 5 ; BOUND range exceeded
-isr_noerr 6 ; invalid opcode
-isr_noerr 7 ; coprocessor not available
-isr_noerr 8 ; double fault
-isr_noerr 9 ; coprocessor segment overrun
-isr_noerr 10 ; invalid tss
-isr_noerr 11 ; segment not present
-isr_noerr 12 ; stack exception
-isr_noerr 13 ; segfault
+isr_noerr 0 ; division by zero				FAULT
+isr_noerr 1 ; debug exceptions				FAULT/TRAP
+isr_noerr 2 ; intel reserved (non maskable interupt)	INTERUPT
+isr_noerr 3 ; breakpoint				TRAP
+isr_noerr 4 ; overflow					TRAP
+isr_noerr 5 ; BOUND range exceeded			FAULT
+isr_noerr 6 ; invalid opcode				FAULT
+isr_noerr 7 ; coprocessor not available			FAULT
+isr_err 8 ; double fault				ABORT
+isr_noerr 9 ; coprocessor segment overrun		FAULT
+isr_err 10 ; invalid tss				FAULT
+isr_err 11 ; segment not present			FAULT
+isr_err 12 ; stack exception				FAULT
+isr_err 13 ; segfault					FAULT
 
-global isr_14 ; page fault
+global isr_14 ; page fault				FAULT
         
 isr_14:
 
@@ -62,12 +62,12 @@ isr_14:
         jmp isr_jumper
         
 isr_noerr 15 ; intel reserved
-isr_noerr 16 ; corprocessor error
-isr_noerr 17 ; alignement check exception
-isr_noerr 18 ; machine check exception
-isr_noerr 19 ; SIMD floating-point exception
+isr_noerr 16 ; corprocessor error			FAULT
+isr_noerr 17 ; alignement check exception		FAULT
+isr_noerr 18 ; machine check exception			ABORT
+isr_noerr 19 ; SIMD floating-point exception		FAULT
 
-;; 20-31 reserved
+;; 20-31 reserved					INTERUPT
 ;; 32-255 maskable interrupts (syscall)
 
 isr_jumper:

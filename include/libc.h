@@ -11,6 +11,8 @@
 #ifndef __LIBC_H_
 #define __LIBC_H_
 
+#include "sys.h"
+
 #define IS_NUM(x) (x >= '0' && x <= '9')
 
 void	*memset(void *s, int c, int n);
@@ -25,7 +27,7 @@ void	putnbr(int nb);
 int		kprintf(char *str, ...);
 
 /* kpanic */
-void		kpanic(const char *);
+void		kpanic(const char *message, struct registers regs);
 
 /* save the initial EBP position to be able to stop tracing function stack */
 #define	KPANIC_INIT()					\
