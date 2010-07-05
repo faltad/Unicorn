@@ -90,6 +90,7 @@ void		idt_setup(void)
 {
   idt_p.limit = sizeof(idt_array);
   idt_p.base = (unsigned int) & idt_array;
+  memset(&idt_array, 0, sizeof(idt_array));
 
   idt_set_gate(0, (uint)isr_0, 0x08, 0x8e);
   idt_set_gate(1, (uint)isr_1, 0x08, 0x8e);
@@ -111,7 +112,6 @@ void		idt_setup(void)
   idt_set_gate(17, (uint)isr_17, 0x08, 0x8e);
   idt_set_gate(18, (uint)isr_18, 0x08, 0x8e);
 
-  memset(&idt_array, 0, sizeof(idt_array));
   __asm__("lidt %0" :: "m" (idt_p));
 }
 
