@@ -113,11 +113,29 @@ void		idt_setup(void)
   idt_set_gate(18, (uint)isr_18, 0x08, 0x8e);
 
   __asm__("lidt %0" :: "m" (idt_p));
+  /* activer les interruptions */
+  asm("sti");
 }
 
 
 /* basic isr handler */
-void	isr_handler()
+void	isr_handler(struct registers regs)
 {
   kputs("received interrupt\n");
+  kprintf("ds %#x\n", regs.ds);
+  kprintf("edi %#x\n", regs.edi);
+  kprintf("esi %#x\n", regs.esi);
+  kprintf("ebp %#x\n", regs.ebp);
+  kprintf("esp %#x\n", regs.esp);
+  kprintf("ebx %#x\n", regs.ebx);
+  kprintf("edx %#x\n", regs.edx);
+  kprintf("ecx %#x\n", regs.ecx);
+  kprintf("eax %#x\n", regs.eax);
+  kprintf("int_no %#x\n", regs.int_no);
+  kprintf("err_code %#x\n", regs.err_code);
+  kprintf("eip %#x\n", regs.eip);
+  kprintf("cs %#x\n", regs.cs);
+  kprintf("eflags %#x\n", regs.eflags);
+  kprintf("useresp %#x\n", regs.useresp);
+  kprintf("ss %#x\n", regs.ss);
 }

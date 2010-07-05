@@ -52,11 +52,11 @@ struct			registers
   ** Data segment selector
   */
   uint			ds;
-  uint			edi;
 
   /*
-  ** Pushed by pusha.
+  ** Pushed by pushad.
   */
+  uint			edi;
   uint			esi;
   uint			ebp;
   uint			esp;
@@ -81,6 +81,6 @@ struct			registers
   uint			ss;
 } __attribute__((packed)); 
 
-void	isr_handler();
+void	isr_handler(struct registers regs);
 
 #endif /* __SYS_H__ */

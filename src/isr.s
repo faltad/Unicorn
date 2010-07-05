@@ -42,15 +42,15 @@ isr_noerr 1 ; debug exceptions
 isr_noerr 2 ; intel reserved (non maskable interupt)
 isr_noerr 3 ; breakpoint
 isr_noerr 4 ; overflow
-isr_noerr 5 ; bounds check
+isr_noerr 5 ; BOUND range exceeded
 isr_noerr 6 ; invalid opcode
 isr_noerr 7 ; coprocessor not available
-isr_err 8 ; double fault
+isr_noerr 8 ; double fault
 isr_noerr 9 ; coprocessor segment overrun
-isr_err 10 ; invalid tss
-isr_err 11 ; segment not present
-isr_err 12 ; stack exception
-isr_err 13 ; triple fault
+isr_noerr 10 ; invalid tss
+isr_noerr 11 ; segment not present
+isr_noerr 12 ; stack exception
+isr_noerr 13 ; segfault
 
 global isr_14 ; page fault
         
@@ -65,12 +65,14 @@ isr_noerr 15 ; intel reserved
 isr_noerr 16 ; corprocessor error
 isr_noerr 17 ; alignement check exception
 isr_noerr 18 ; machine check exception
+isr_noerr 19 ; SIMD floating-point exception
 
-;; 19-31 reserved
+;; 20-31 reserved
+;; 32-255 maskable interrupts (syscall)
 
 isr_jumper:
-	
-        pusha
+
+        pushad
 
 	mov ax, ds
 	push eax
@@ -90,8 +92,8 @@ isr_jumper:
 	mov fs, ax
 	mov gs, ax
 
-	popa
+	popad
 	add esp, 8
-	sti
+	sti			
 	iret
 	

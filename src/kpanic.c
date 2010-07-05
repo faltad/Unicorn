@@ -95,10 +95,4 @@ void		kpanic(const char * message)
   kprintf("#\tKernel panic: %s\n", message);
   tracereg(&regs);
   backtrace();
-
-  /* mxs: Not sure if this is good, as any interupt might occur
-   * I think we need a flag or something to disable handling
-   * of interrupts.
-   */
-  for (;;);
 }
